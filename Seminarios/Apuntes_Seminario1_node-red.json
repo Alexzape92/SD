@@ -1,0 +1,265 @@
+[
+    {
+        "id": "7b883ff2b7281063",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "9ebe3959f9cd167e",
+        "type": "tab",
+        "label": "Flow 2",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "62a9f2dfb87e958d",
+        "type": "tab",
+        "label": "Flow 3",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "b70fa19b74de0de1",
+        "type": "inject",
+        "z": "7b883ff2b7281063",
+        "name": "Hello world",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "dw",
+        "payload": "Hello World!",
+        "payloadType": "str",
+        "x": 140,
+        "y": 160,
+        "wires": [
+            [
+                "36c19c11a7fa0b9d"
+            ]
+        ]
+    },
+    {
+        "id": "36c19c11a7fa0b9d",
+        "type": "debug",
+        "z": "7b883ff2b7281063",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 350,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "4ac4180c4cd4decf",
+        "type": "inject",
+        "z": "9ebe3959f9cd167e",
+        "name": "Entrada",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"divisa\":\"dólar\",\"cantidad\":5}",
+        "payloadType": "json",
+        "x": 150,
+        "y": 120,
+        "wires": [
+            [
+                "edbb43cf2c4a08be",
+                "eba80c26da80b529"
+            ]
+        ]
+    },
+    {
+        "id": "eba80c26da80b529",
+        "type": "function",
+        "z": "9ebe3959f9cd167e",
+        "name": "Cambio",
+        "func": "if(msg.payload.divisa == \"euro\"){\n    var cambio = msg.payload.cantidad * 1.11\n    msg.payload.cambio = cambio\n}\nelse{\n    var cambio = msg.payload.cantidad * 0.89\n    msg.payload.cambio = cambio\n}\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 340,
+        "y": 120,
+        "wires": [
+            [
+                "acb9c4a36c0893d6"
+            ]
+        ]
+    },
+    {
+        "id": "edbb43cf2c4a08be",
+        "type": "debug",
+        "z": "9ebe3959f9cd167e",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 250,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "acb9c4a36c0893d6",
+        "type": "debug",
+        "z": "9ebe3959f9cd167e",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 550,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "0a6c6bd73ad3b943",
+        "type": "inject",
+        "z": "62a9f2dfb87e958d",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 180,
+        "y": 160,
+        "wires": [
+            [
+                "9845f8528f92be82"
+            ]
+        ]
+    },
+    {
+        "id": "9845f8528f92be82",
+        "type": "function",
+        "z": "62a9f2dfb87e958d",
+        "name": "",
+        "func": "var i = context.get('accum') || 0; //Si accum no está en el\n                                   //contexto, inicializa i a 0\n\ni++;\n\nmsg.payload = i;\n\ncontext.set('accum', i);\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 380,
+        "y": 160,
+        "wires": [
+            [
+                "ca5776f91848e30f"
+            ]
+        ]
+    },
+    {
+        "id": "ca5776f91848e30f",
+        "type": "debug",
+        "z": "62a9f2dfb87e958d",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 590,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "5ea61a54b809aeca",
+        "type": "function",
+        "z": "62a9f2dfb87e958d",
+        "name": "",
+        "func": "var i = context.get('accum') || 0; //Si accum no está en el\n                                   //contexto, inicializa i a 0\n//Para que se compartan en el mismo flujo en vez de en el\n//mismo nodo, cambiamos context por 'flow', y para que se\n//compartan en todo el programa, 'global'\n\ni++;\n\nmsg.payload = i;\n\ncontext.set('accum', i);\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 380,
+        "y": 240,
+        "wires": [
+            [
+                "ca5776f91848e30f"
+            ]
+        ]
+    },
+    {
+        "id": "f4707c92036436b0",
+        "type": "inject",
+        "z": "62a9f2dfb87e958d",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 180,
+        "y": 240,
+        "wires": [
+            [
+                "5ea61a54b809aeca"
+            ]
+        ]
+    }
+]
