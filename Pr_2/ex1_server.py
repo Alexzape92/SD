@@ -8,7 +8,6 @@ def main(host, port):
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     s.bind((host, port))
     
-    print('He llegado el recvfrom')
     buffer, addr = s.recvfrom(1024)
     buffer = buffer.decode('utf-8')
     while buffer != 'exit':

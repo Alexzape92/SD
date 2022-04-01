@@ -14,7 +14,6 @@ def main(host, port, n):
         x = random.uniform(0, 1)
         y = random.uniform(0, 1)
         cad = '(0' + str(x) + ',' + str(y) + ')'
-        print('He llegado al sendto')
         s.sendto(cad.encode("utf-8"), REMOTE_ADDR)
 
         buffer, addr = s.recvfrom(1024)
@@ -22,6 +21,8 @@ def main(host, port, n):
 
         if(buffer == 'below'):
             counts_b = counts_b + 1
+    
+    s.sendto("exit".encode('utf-8'), REMOTE_ADDR)
     
     pi = 4 * counts_b / n
     print(pi)
