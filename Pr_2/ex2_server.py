@@ -11,6 +11,7 @@ def hayA(pal):
 
 def main(host, port):
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     s.bind((host, port))
     s.listen()
     s_for_client, addr_c = s.accept()
@@ -32,12 +33,12 @@ def main(host, port):
     s_for_client.send(msg1)
 
     for palabra in list_res:
+        palabra = palabra + ' '
         s_for_client.send(palabra.encode('utf-8'))
-        s_for_client.send(' '.encode('utf-8'))
+    s_for_client.send(' '.encode('utf-8'))
 
     s_for_client.close()
     s.close()
-        
     
 
 if __name__ == '__main__':

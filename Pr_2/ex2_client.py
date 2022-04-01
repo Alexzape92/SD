@@ -2,6 +2,17 @@ import argparse
 import socket
 from os.path import exists
 
+def recibir_mensaje(socket):
+    terminar = 2
+    mensaje = ""
+    while terminar > 0:
+        recibido = socket.recv(1).decode('utf-8')
+        mensaje += recibido
+        if (recibido == " "): terminar -= 1
+        else: terminar = 2
+
+    return mensaje
+
 def main(host, port, filein, fileout):
     REMOTE_ADDR = (host, port)
 
@@ -9,23 +20,32 @@ def main(host, port, filein, fileout):
 
     if(not exists(filein)):
         raise OSError
+
     file = open(filein, 'r')
     text = file.read()
     
     s.connect(REMOTE_ADDR)
     s.sendall(text.encode('utf-8'))
 
-    buffer = s.recv(1024)
+    #Guardamos en palsa el numero de palabras que contienen la A
+    buffer = s.recv(2)
     palsa = int.from_bytes(buffer, 'big')
-    print(palsa)
 
-    buffer = s.recv(1024)
-    pala = buffer.decode('utf-8')
-    print(pala)
+    #guardamos en mensaje la cadena con las palabras, separadas con espacios, y lo convertimos en lista
+    mensaje = recibir_mensaje(s)
+    lista = mensaje.split()
+
+    file.close()
+
+    if(not exists(fileout)):
+        raise OSError
     
-    lista = pala.split()
-    print(lista)
-
+    file = open(fileout, 'w', newline='\n')
+    for pal in lista:
+        file.write(pal)
+        file.write('\n')
+    
+    file.close()
     s.close()
 
 
