@@ -1,0 +1,23 @@
+{
+    "Salas": [
+        
+    ],
+
+    "Reservas": [
+
+    ],
+
+    "Usuarios":[
+        {
+            "DNI": "32092444S",
+            "Nick": "AlexZape",
+            "passwd": "Link96"
+        },
+
+        {
+            "DNI": "32920711Y",
+            "Nick": "Richarte02",
+            "passwd": "Twitch"
+        }
+    ]
+}
