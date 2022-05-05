@@ -8,6 +8,9 @@ salas = list()
 reservas = list()
 users = list()
 
+#Reserva incremental
+ultres = 0
+
 #Definimos las clases a usar
 class Sala:
     def __init__(self, idSala, capacidad, recursos):    #Recursos es una lista de strings
@@ -70,50 +73,87 @@ def jsonparser():
 def add_room():
     datosSala = request.json
 
-    id = datosSala['idSala']
-    cap = datosSala['capacidad']
-    rss = datosSala['recursos']
+    if not checkCredenciales(datosSala['user'], datosSala['passw']):
+        return "Credenciales no válidas"
+    else:
+        id = datosSala['idSala']
+        cap = datosSala['capacidad']
+        rss = datosSala['recursos']
 
-    sala = Sala(id, cap, rss)
+        sala = Sala(id, cap, rss)
 
-    salas.append(sala)
+        salas.append(sala)
 
 @get('/showInformationRoom/<id>')
 def show_room(id):
-    for sala in salas:
-        if(sala.idSala == id):
-            break
+    datosUser = request.json
 
-    auxdict = {
-        "idSala": sala.idSala,
-        "capacidad": sala.capacidad,
-        "recursos": sala.recursos
-    }
-    return json.dumps(auxdict, indent=4)
+    if not checkCredenciales(datosUser['user'], datosUser['passw']):
+        return "Credenciales no válidas"
+    else:
+        for sala in salas:
+            if(sala.idSala == id):
+                break
+
+        auxdict = {
+            "idSala": sala.idSala,
+            "capacidad": sala.capacidad,
+            "recursos": sala.recursos
+        }
+        return json.dumps(auxdict, indent=4)
 
 @post('/addBooking')
 def add_resrv():
     datosResrv = request.json
+    global ultres
 
-    idr = datosResrv['idReserva']
-    ids = datosResrv['idSala']
-    dni = datosResrv['DNI']
-    fec = datosResrv['fecha']
-    horaini = datosResrv['HoraInicio']
-    horafin = datosResrv['HoraFin']
-
-    if not salaOcupada(ids):
-        reserva = Reserva(idr, ids, dni, fec, horaini, horafin)
-        reservas.append(reserva)
+    if not checkCredenciales(datosResrv['user'], datosResrv['passw']):
+        return "Credenciales no válidas"
     else:
-        
+        ids = datosResrv['idSala']
+        fec = datosResrv['fecha']
+        horaini = datosResrv['HoraInicio']
+        horafin = datosResrv['HoraFin']
+
+        if not salaOcupada(ids, fec, horaini, horafin):
+            for u in users:
+                if u.nick == datosResrv['user'] and u.passwd == datosResrv['passw']:
+                    break
+            reserva = Reserva(ultres, ids, u.DNI, fec, horaini, horafin)
+            reservas.append(reserva)
+            ultres = ultres + 1
+        else:
+            ocupDict = {
+                "La sala que desea reservar está ocupada":[
+
+                ]
+            }
+            for r in reservas:
+                if r.fecha == fec and horaini > r.fin and horafin < r.ini:
+                    sala = salas.index(r.idSala)
+                    ocupDict["La sala que desea reservar está ocupada"].append(salas[sala].__str__())
+            
+            outjson = json.dumps(ocupDict)
+            return outjson
 
 
-def salaOcupada(ids):
+
+            
+
+#FUNCIONES AUXILIARES----------------------------------------------------------------------------------------------
+def salaOcupada(ids, fec, horaini, horafin):
     for resv in reservas:
-        if(resv.idSala == ids):
+        if resv.idSala == ids and resv.fecha == fec and horaini < resv.fin and horafin > resv.ini:
             return True
     return False
 
+def checkCredenciales(user, passw):
+    for u in users:
+        if u.nick == user and u.passwd == passw:
+            return True
+    return False
+
+
 if __name__ == '__main__':
+    jsonparser()
     run(host='localhost', port=8000, debug=True)
