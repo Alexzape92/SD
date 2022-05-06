@@ -1,0 +1,100 @@
+[
+    {
+        "id": "7b883ff2b7281063",
+        "type": "tab",
+        "label": "Publicador",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "21dc0e106e1b8062",
+        "type": "mqtt out",
+        "z": "7b883ff2b7281063",
+        "name": "MQTT sender",
+        "topic": "Random_int",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "9cd4e3b5d14d6632",
+        "x": 560,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "6e02fa2c0ed74a58",
+        "type": "inject",
+        "z": "7b883ff2b7281063",
+        "name": "Injecter",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "10",
+        "crontab": "",
+        "once": false,
+        "onceDelay": "10",
+        "topic": "",
+        "payload": "5",
+        "payloadType": "num",
+        "x": 140,
+        "y": 180,
+        "wires": [
+            [
+                "ddf36ec619c2eac8"
+            ]
+        ]
+    },
+    {
+        "id": "ddf36ec619c2eac8",
+        "type": "random",
+        "z": "7b883ff2b7281063",
+        "name": "",
+        "low": "10",
+        "high": "100",
+        "inte": "true",
+        "property": "payload",
+        "x": 340,
+        "y": 180,
+        "wires": [
+            [
+                "21dc0e106e1b8062"
+            ]
+        ]
+    },
+    {
+        "id": "9cd4e3b5d14d6632",
+        "type": "mqtt-broker",
+        "name": "Mosquitto",
+        "broker": "localhost",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "sessionExpiry": ""
+    }
+]
