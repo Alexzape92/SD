@@ -1,0 +1,57 @@
+[
+    {
+        "id": "c614dc94eb41a882",
+        "type": "tab",
+        "label": "Reverser",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "e6dc92ed16dac8a9",
+        "type": "http in",
+        "z": "c614dc94eb41a882",
+        "name": "[post] /reverse",
+        "url": "/reverse",
+        "method": "post",
+        "upload": true,
+        "swaggerDoc": "",
+        "x": 210,
+        "y": 160,
+        "wires": [
+            [
+                "2a23a9601d23d35f"
+            ]
+        ]
+    },
+    {
+        "id": "2db5ab1a61fb467e",
+        "type": "http response",
+        "z": "c614dc94eb41a882",
+        "name": "Respuesta",
+        "statusCode": "",
+        "headers": {},
+        "x": 610,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "2a23a9601d23d35f",
+        "type": "function",
+        "z": "c614dc94eb41a882",
+        "name": "",
+        "func": "var cadena = msg.payload.str;   //Tenemos la cadena en cuestión\nvar result = cadena.split(\"\").reverse().join(\"\");\n\nmsg.payload = {\"str_reversed\":\"\"};\nmsg.payload.str_reversed = result;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 420,
+        "y": 160,
+        "wires": [
+            [
+                "2db5ab1a61fb467e"
+            ]
+        ]
+    }
+]

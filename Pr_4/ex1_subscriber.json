@@ -1,0 +1,92 @@
+[
+    {
+        "id": "c614dc94eb41a882",
+        "type": "tab",
+        "label": "Suscriptor",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "5906b88330a7c013",
+        "type": "mqtt in",
+        "z": "c614dc94eb41a882",
+        "name": "MQTT Receiver",
+        "topic": "Random_int",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "9cd4e3b5d14d6632",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 180,
+        "y": 160,
+        "wires": [
+            [
+                "544d2e88827cf651"
+            ]
+        ]
+    },
+    {
+        "id": "544d2e88827cf651",
+        "type": "function",
+        "z": "c614dc94eb41a882",
+        "name": "IntConverter",
+        "func": "msg.payload = parseInt(msg.payload);\nvar i = context.get('acumulador') || 0;\n\nif (msg.payload % 2 == 0){\n    i++;\n    context.set('acumulador', i)\n}\n\nmsg.payload = \"Nº: \" + msg.payload + \". El acumulador vale \" + i;\nreturn msg;\n    ",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 410,
+        "y": 160,
+        "wires": [
+            [
+                "b61d9132ef8242f1"
+            ]
+        ]
+    },
+    {
+        "id": "b61d9132ef8242f1",
+        "type": "debug",
+        "z": "c614dc94eb41a882",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 630,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "9cd4e3b5d14d6632",
+        "type": "mqtt-broker",
+        "name": "Mosquitto",
+        "broker": "localhost",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "sessionExpiry": ""
+    }
+]
