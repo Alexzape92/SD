@@ -1,0 +1,534 @@
+[
+    {
+        "id": "c614dc94eb41a882",
+        "type": "tab",
+        "label": "Bot",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "55cd1bb69b49b239",
+        "type": "http request",
+        "z": "c614dc94eb41a882",
+        "name": "",
+        "method": "GET",
+        "ret": "txt",
+        "paytoqs": "body",
+        "url": "https://league-of-legends-stats.p.rapidapi.com/champions/{{{payload.content}}}/stats",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "senderr": false,
+        "x": 510,
+        "y": 80,
+        "wires": [
+            [
+                "965e3c8f782d4613"
+            ]
+        ]
+    },
+    {
+        "id": "d2a7f738be8907be",
+        "type": "function",
+        "z": "c614dc94eb41a882",
+        "name": "setHeaders",
+        "func": "msg.headers ={\n    'X-RapidAPI-Host': 'league-of-legends-stats.p.rapidapi.com',\n    'X-RapidAPI-Key': 'db71066ab4msha3c756b46e2a12bp1ccfcdjsnf4c5bab6e22b'\n}\n\nmsg.payload.content = msg.payload.content.slice(1);\nglobal.set('chat', msg.payload.chatId);\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 310,
+        "y": 80,
+        "wires": [
+            [
+                "55cd1bb69b49b239"
+            ]
+        ]
+    },
+    {
+        "id": "7ff65314d589621d",
+        "type": "telegram command",
+        "z": "c614dc94eb41a882",
+        "name": "StatsChamp",
+        "command": "/statsChamp",
+        "description": "",
+        "registercommand": false,
+        "language": "",
+        "scope": "default",
+        "bot": "2f625d682e62b09a",
+        "strict": false,
+        "hasresponse": true,
+        "useregex": false,
+        "removeregexcommand": false,
+        "outputs": 2,
+        "x": 90,
+        "y": 80,
+        "wires": [
+            [
+                "d2a7f738be8907be"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "da336473352d44dc",
+        "type": "telegram sender",
+        "z": "c614dc94eb41a882",
+        "name": "EnviaStatsChamp",
+        "bot": "2f625d682e62b09a",
+        "haserroroutput": false,
+        "outputs": 1,
+        "x": 1030,
+        "y": 80,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "22f06fd2f65a58cf",
+        "type": "function",
+        "z": "c614dc94eb41a882",
+        "name": "",
+        "func": "contenido = msg.payload;\nmsg.payload = {};\ncontenido = JSON.stringify(contenido, null, 3);\nmsg.payload.content = contenido;\nmsg.payload.chatId = global.get('chat');\nmsg.payload.type = 'message';\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 820,
+        "y": 80,
+        "wires": [
+            [
+                "da336473352d44dc"
+            ]
+        ]
+    },
+    {
+        "id": "965e3c8f782d4613",
+        "type": "json",
+        "z": "c614dc94eb41a882",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 670,
+        "y": 80,
+        "wires": [
+            [
+                "22f06fd2f65a58cf"
+            ]
+        ]
+    },
+    {
+        "id": "0dddea1f14737d26",
+        "type": "comment",
+        "z": "c614dc94eb41a882",
+        "name": "/statsChamp",
+        "info": "",
+        "x": 90,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "b241023d6f89e8ee",
+        "type": "telegram command",
+        "z": "c614dc94eb41a882",
+        "name": "ChampionNames",
+        "command": "/ChampionNames",
+        "description": "",
+        "registercommand": false,
+        "language": "",
+        "scope": "default",
+        "bot": "2f625d682e62b09a",
+        "strict": false,
+        "hasresponse": true,
+        "useregex": false,
+        "removeregexcommand": false,
+        "outputs": 2,
+        "x": 100,
+        "y": 300,
+        "wires": [
+            [
+                "092d6fce525876d0"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "092d6fce525876d0",
+        "type": "function",
+        "z": "c614dc94eb41a882",
+        "name": "setHeaders",
+        "func": "msg.headers ={\n    'X-RapidAPI-Host': 'league-of-legends-stats.p.rapidapi.com',\n    'X-RapidAPI-Key': '9f07f2e7bemsh2c8f3cf114ebe50p122448jsnb71b80e4e4ce'\n}\n\nmsg.payload.content = msg.payload.content.slice(1);\nglobal.set('chat', msg.payload.chatId);\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 310,
+        "y": 300,
+        "wires": [
+            [
+                "de771ee4bd835e82"
+            ]
+        ]
+    },
+    {
+        "id": "de771ee4bd835e82",
+        "type": "http request",
+        "z": "c614dc94eb41a882",
+        "name": "",
+        "method": "GET",
+        "ret": "txt",
+        "paytoqs": "body",
+        "url": "https://league-of-legends-stats.p.rapidapi.com/champions",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "senderr": false,
+        "x": 510,
+        "y": 300,
+        "wires": [
+            [
+                "02cc0bf13284eb3c"
+            ]
+        ]
+    },
+    {
+        "id": "a5e6a19ad088174f",
+        "type": "telegram sender",
+        "z": "c614dc94eb41a882",
+        "name": "EnviaChamps",
+        "bot": "2f625d682e62b09a",
+        "haserroroutput": false,
+        "outputs": 1,
+        "x": 980,
+        "y": 300,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "8c612d30bc9fc56c",
+        "type": "function",
+        "z": "c614dc94eb41a882",
+        "name": "",
+        "func": "contenido = msg.payload;\nmsg.payload = {};\ncontenido = JSON.stringify(contenido, null, 3);\nmsg.payload.content = contenido;\nmsg.payload.chatId = global.get('chat');\nmsg.payload.type = 'message';\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 800,
+        "y": 300,
+        "wires": [
+            [
+                "a5e6a19ad088174f"
+            ]
+        ]
+    },
+    {
+        "id": "02cc0bf13284eb3c",
+        "type": "json",
+        "z": "c614dc94eb41a882",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 670,
+        "y": 300,
+        "wires": [
+            [
+                "8c612d30bc9fc56c"
+            ]
+        ]
+    },
+    {
+        "id": "6260ba893a08b9ef",
+        "type": "comment",
+        "z": "c614dc94eb41a882",
+        "name": "/ChampionNames",
+        "info": "",
+        "x": 110,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "70c3338177709756",
+        "type": "telegram command",
+        "z": "c614dc94eb41a882",
+        "name": "WarzoneStats",
+        "command": "/WarzoneStats",
+        "description": "",
+        "registercommand": false,
+        "language": "",
+        "scope": "default",
+        "bot": "2f625d682e62b09a",
+        "strict": false,
+        "hasresponse": true,
+        "useregex": false,
+        "removeregexcommand": false,
+        "outputs": 2,
+        "x": 90,
+        "y": 540,
+        "wires": [
+            [
+                "fd315f235f394f34"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "fd315f235f394f34",
+        "type": "function",
+        "z": "c614dc94eb41a882",
+        "name": "setHeaders",
+        "func": "msg.headers ={\n    'X-RapidAPI-Host': 'call-of-duty-modern-warfare.p.rapidapi.com',\n    'X-RapidAPI-Key': '9f07f2e7bemsh2c8f3cf114ebe50p122448jsnb71b80e4e4ce'\n}\n\nmsg.payload.content = msg.payload.content.slice(1);\n\nvar cont = msg.payload.content.indexOf(' ');\n\nmsg.payload.user = msg.payload.content.substring(0, cont);\nmsg.payload.plat = msg.payload.content.substring(cont + 1, msg.payload.content.length);\n\nglobal.set('chat', msg.payload.chatId);\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 310,
+        "y": 540,
+        "wires": [
+            [
+                "2380b1016999c1b5"
+            ]
+        ]
+    },
+    {
+        "id": "2380b1016999c1b5",
+        "type": "http request",
+        "z": "c614dc94eb41a882",
+        "name": "",
+        "method": "GET",
+        "ret": "txt",
+        "paytoqs": "body",
+        "url": "https://call-of-duty-modern-warfare.p.rapidapi.com/warzone/{{{payload.user}}}/{{{payload.plat}}}",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "senderr": false,
+        "x": 510,
+        "y": 540,
+        "wires": [
+            [
+                "bc050da492fc3424"
+            ]
+        ]
+    },
+    {
+        "id": "bc050da492fc3424",
+        "type": "json",
+        "z": "c614dc94eb41a882",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 670,
+        "y": 540,
+        "wires": [
+            [
+                "b2c68bddd4d5d9c8"
+            ]
+        ]
+    },
+    {
+        "id": "b2c68bddd4d5d9c8",
+        "type": "function",
+        "z": "c614dc94eb41a882",
+        "name": "",
+        "func": "contenido = msg.payload;\nmsg.payload = {};\ncontenido = JSON.stringify(contenido, null, 3);\nmsg.payload.content = contenido;\nmsg.payload.chatId = global.get('chat');\nmsg.payload.type = 'message';\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 820,
+        "y": 540,
+        "wires": [
+            [
+                "95ffe2c22ffe8c9e"
+            ]
+        ]
+    },
+    {
+        "id": "95ffe2c22ffe8c9e",
+        "type": "telegram sender",
+        "z": "c614dc94eb41a882",
+        "name": "EnviaStats",
+        "bot": "2f625d682e62b09a",
+        "haserroroutput": false,
+        "outputs": 1,
+        "x": 1010,
+        "y": 540,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "33a2c4f314299771",
+        "type": "telegram command",
+        "z": "c614dc94eb41a882",
+        "name": "MWStats",
+        "command": "/MWStats",
+        "description": "",
+        "registercommand": false,
+        "language": "",
+        "scope": "default",
+        "bot": "2f625d682e62b09a",
+        "strict": false,
+        "hasresponse": true,
+        "useregex": false,
+        "removeregexcommand": false,
+        "outputs": 2,
+        "x": 80,
+        "y": 760,
+        "wires": [
+            [
+                "97240775ff53c0a3"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "97240775ff53c0a3",
+        "type": "function",
+        "z": "c614dc94eb41a882",
+        "name": "setHeaders",
+        "func": "msg.headers ={\n    'X-RapidAPI-Host': 'call-of-duty-modern-warfare.p.rapidapi.com',\n    'X-RapidAPI-Key': '9f07f2e7bemsh2c8f3cf114ebe50p122448jsnb71b80e4e4ce'\n}\n\nmsg.payload.content = msg.payload.content.slice(1);\n\nvar cont = msg.payload.content.indexOf(' ');\n\nmsg.payload.user = msg.payload.content.substring(0, cont);\nmsg.payload.plat = msg.payload.content.substring(cont + 1, msg.payload.content.length);\n\nglobal.set('chat', msg.payload.chatId);\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 310,
+        "y": 760,
+        "wires": [
+            [
+                "0319103c51c87c17"
+            ]
+        ]
+    },
+    {
+        "id": "0319103c51c87c17",
+        "type": "http request",
+        "z": "c614dc94eb41a882",
+        "name": "",
+        "method": "GET",
+        "ret": "txt",
+        "paytoqs": "body",
+        "url": "https://call-of-duty-modern-warfare.p.rapidapi.com/multiplayer/{{{payload.user}}}/{{{payload.plat}}}",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "senderr": false,
+        "x": 510,
+        "y": 760,
+        "wires": [
+            [
+                "69729c9957e9575d"
+            ]
+        ]
+    },
+    {
+        "id": "69729c9957e9575d",
+        "type": "json",
+        "z": "c614dc94eb41a882",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 670,
+        "y": 760,
+        "wires": [
+            [
+                "9d61e1337e10e80b"
+            ]
+        ]
+    },
+    {
+        "id": "9d61e1337e10e80b",
+        "type": "function",
+        "z": "c614dc94eb41a882",
+        "name": "",
+        "func": "contenido = msg.payload;\nmsg.payload = {};\ncontenido = JSON.stringify(contenido, null, 3);\nmsg.payload.content = contenido;\nmsg.payload.chatId = global.get('chat');\nmsg.payload.type = 'message';\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 820,
+        "y": 760,
+        "wires": [
+            [
+                "7a1d8e6fe56a859f"
+            ]
+        ]
+    },
+    {
+        "id": "7a1d8e6fe56a859f",
+        "type": "telegram sender",
+        "z": "c614dc94eb41a882",
+        "name": "EnviaStats",
+        "bot": "2f625d682e62b09a",
+        "haserroroutput": false,
+        "outputs": 1,
+        "x": 1010,
+        "y": 760,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "50a3e16d6138c2c3",
+        "type": "comment",
+        "z": "c614dc94eb41a882",
+        "name": "/MWStats",
+        "info": "",
+        "x": 80,
+        "y": 700,
+        "wires": []
+    },
+    {
+        "id": "ec45d416672f4a99",
+        "type": "comment",
+        "z": "c614dc94eb41a882",
+        "name": "/WarzoneStats",
+        "info": "",
+        "x": 100,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "2f625d682e62b09a",
+        "type": "telegram bot",
+        "botname": "AGF_SDBot",
+        "usernames": "",
+        "chatids": "",
+        "baseapiurl": "",
+        "updatemode": "polling",
+        "pollinterval": "300",
+        "usesocks": false,
+        "sockshost": "",
+        "socksport": "6667",
+        "socksusername": "anonymous",
+        "sockspassword": "",
+        "bothost": "",
+        "botpath": "",
+        "localbotport": "8443",
+        "publicbotport": "8443",
+        "privatekey": "",
+        "certificate": "",
+        "useselfsignedcertificate": false,
+        "sslterminated": false,
+        "verboselogging": false
+    }
+]
