@@ -1,0 +1,166 @@
+[
+    {
+        "id": "c614dc94eb41a882",
+        "type": "tab",
+        "label": "Bot",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "55cd1bb69b49b239",
+        "type": "http request",
+        "z": "c614dc94eb41a882",
+        "name": "",
+        "method": "GET",
+        "ret": "txt",
+        "paytoqs": "body",
+        "url": "https://league-of-legends-stats.p.rapidapi.com/champions/{{{payload.content}}}/stats",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "senderr": false,
+        "x": 530,
+        "y": 220,
+        "wires": [
+            [
+                "581073df5628303a"
+            ]
+        ]
+    },
+    {
+        "id": "d2a7f738be8907be",
+        "type": "function",
+        "z": "c614dc94eb41a882",
+        "name": "setHeaders",
+        "func": "msg.headers ={\n    'X-RapidAPI-Host': 'league-of-legends-stats.p.rapidapi.com',\n    'X-RapidAPI-Key': 'db71066ab4msha3c756b46e2a12bp1ccfcdjsnf4c5bab6e22b'\n}\n\nmsg.payload.content = msg.payload.content.slice(1);\nglobal.set('chat', msg.payload.chatId);\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 330,
+        "y": 220,
+        "wires": [
+            [
+                "55cd1bb69b49b239"
+            ]
+        ]
+    },
+    {
+        "id": "7ff65314d589621d",
+        "type": "telegram command",
+        "z": "c614dc94eb41a882",
+        "name": "StatsChampion",
+        "command": "/statsChamp",
+        "description": "",
+        "registercommand": false,
+        "language": "",
+        "scope": "default",
+        "bot": "2f625d682e62b09a",
+        "strict": false,
+        "hasresponse": true,
+        "useregex": false,
+        "removeregexcommand": false,
+        "outputs": 2,
+        "x": 120,
+        "y": 220,
+        "wires": [
+            [
+                "d2a7f738be8907be"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "da336473352d44dc",
+        "type": "telegram sender",
+        "z": "c614dc94eb41a882",
+        "name": "EnviaStatsChamp",
+        "bot": "2f625d682e62b09a",
+        "haserroroutput": false,
+        "outputs": 1,
+        "x": 730,
+        "y": 360,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "22f06fd2f65a58cf",
+        "type": "function",
+        "z": "c614dc94eb41a882",
+        "name": "",
+        "func": "msg.payload.content = msg.payload;\nmsg.payload.chatId = global.get('chat');\nmsg.payload.type = 'message';\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 640,
+        "y": 280,
+        "wires": [
+            [
+                "da336473352d44dc",
+                "ea7e0505784ba9ab"
+            ]
+        ]
+    },
+    {
+        "id": "ea7e0505784ba9ab",
+        "type": "debug",
+        "z": "c614dc94eb41a882",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 790,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "581073df5628303a",
+        "type": "json",
+        "z": "c614dc94eb41a882",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 670,
+        "y": 180,
+        "wires": [
+            [
+                "22f06fd2f65a58cf"
+            ]
+        ]
+    },
+    {
+        "id": "2f625d682e62b09a",
+        "type": "telegram bot",
+        "botname": "AGF_SDBot",
+        "usernames": "",
+        "chatids": "",
+        "baseapiurl": "",
+        "updatemode": "polling",
+        "pollinterval": "300",
+        "usesocks": false,
+        "sockshost": "",
+        "socksport": "6667",
+        "socksusername": "anonymous",
+        "sockspassword": "",
+        "bothost": "",
+        "botpath": "",
+        "localbotport": "8443",
+        "publicbotport": "8443",
+        "privatekey": "",
+        "certificate": "",
+        "useselfsignedcertificate": false,
+        "sslterminated": false,
+        "verboselogging": false
+    }
+]
